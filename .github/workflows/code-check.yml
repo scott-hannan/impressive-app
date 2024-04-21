@@ -4,21 +4,25 @@ jobs:
   ruff:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
       - name: Install Python
         uses: actions/setup-python@v4
         
       - name: Install poetry
         uses: abatilo/actions-poetry@v2
+
       - name: Poetry Init CI Tooling
         shell: bash
         run: |
           poetry install --only CI && poetry shell
+
       - uses: actions/cache@v3
         name: Define a cache for the virtual environment based on the dependencies lock file
         with:
           path: ./.venv
           key: venv-${{ hashFiles('poetry.lock') }}
-      - name: Checkout Repo
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+          
       - name: Run Ruff 
         uses: ./.github/actions/run-ruff
