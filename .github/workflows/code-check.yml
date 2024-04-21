@@ -7,7 +7,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Run Ruff 
-        uses: ../actions/run-ruff@main
+        uses: ./.github/actions/run-ruff
 
         
       
