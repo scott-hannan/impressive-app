@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "impressive-app"
+version = "0.1.0"
+description = "A very impressive app"
+authors = ["Scott Hannan <scott.n.hannan@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12.2"
+django = "^5.0.4"
+gunicorn = "^22.0.0"
+
+
+[tool.poetry.group.CI.dependencies]
+ruff = "^0.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
