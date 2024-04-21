@@ -3,13 +3,13 @@ name: Run Ruff
 description: Runs the ruff lint and formatting 
 
 runs: 
-  using: 'composite'
+  using: composite
   steps: 
     - name: Run Ruff Check
-        shell: bash
-        run: |
-          ruff check
-      - name: Run Ruff Format
-        shell: bash
-        run: |
-          ruff format
+      shell: bash
+      run: |
+        ruff check
+    - name: Run Ruff Format
+      shell: bash
+      run: |
+        ruff format
