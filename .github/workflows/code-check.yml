@@ -16,13 +16,13 @@ jobs:
       - name: Poetry Init CI Tooling
         shell: bash
         run: |
-          poetry install --only CI && poetry shell
-
+          poetry install --only CI
+          
       - uses: actions/cache@v3
         name: Define a cache for the virtual environment based on the dependencies lock file
         with:
           path: ./.venv
           key: venv-${{ hashFiles('poetry.lock') }}
-          
+
       - name: Run Ruff 
         uses: ./.github/actions/run-ruff

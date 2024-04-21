@@ -1,6 +1,6 @@
 name: Run Ruff
 
-description: Runs the ruff lint and formatting 
+description: Runs the ruff lint and formatting, assumes poetry is installed and venv initted.
 
 runs: 
   using: composite
@@ -8,8 +8,8 @@ runs:
     - name: Run Ruff Check
       shell: bash
       run: |
-        ruff check
+        poetry run ruff check
     - name: Run Ruff Format
       shell: bash
       run: |
-        ruff format
+        poetry run ruff format
