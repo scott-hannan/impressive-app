@@ -26,3 +26,20 @@ Things I want to keep in mind:
 * How to keep the developer experience in mind?
 * (for further down): Do I deploy versioned apps (ie. something like packages), or do "on merge to main, that is the new live version?" 
 * (for further down): When do I add something like dependa-bot or renovate to manage package versions? (Probably ASAP :D) 
+
+### Phase 1.1
+* I am going to use invoke as an interface for tasks that should be run in dev/CI - I want to keep this tooling as lightweight as possible.
+
+* **Captains Log, Day 15**: I spent a lot of time trying to craft the perfect dockerfile, which I now realize was a waste. Not a waste in the sense that I didn't learn anything - but more a waste in the sense of I am trying to optimize before just getting something working. So I scrapped most of the docker shenanigans I was working on. I am left with a simple docker file that installs my non-dev dependencies and runs a django server. This is something I will return to when it _makes sense_.
+
+* Phase one looks to be drawing to an end, lets review our goals.
+    * Get a containerized web app running: At least locally, this has been accomplished.
+    * Have some basic tooling for development: I made a couple commands to handle docker, there is linting and formatting, there is dependency management and virtualenv. 
+
+### Phase 1 Final Thoughts
+* Starting something from the ground up is not a simple task, there is so much to handle.
+* I want to push forwards to phase 2 even though there is much, much more to do related to dev tooling, dependencies, images, etc. But I think this is a good start. These things will continue to be tweaked, added and overhauled, but we've got a good base.
+* I thought, "hey kubernetes would be cool to try." So, I tried it, and realized for a project of this scope, it was wayyyyy overcomplicated - but hey I learned some stuff so not a loss at all.
+* Poetry might not be the best package manager - it complicated the containerization of the app quite a lot. Most of the issues I ran into this phase had to do with poetry. I will leave it because **half of the fun of software development is migrating from one tool to another** ---- So, really looking forward to that :D.
+* I think the goal for phase 2 will center more around developing a basic application, rather than the tooling - we can see if the tooling I put in place to dev actually helps! 
+* Things outstanding to remember: workflows for building containers (how does this play with invoke), dev-container, *the cloud*  
