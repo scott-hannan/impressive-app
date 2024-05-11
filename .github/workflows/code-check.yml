@@ -7,7 +7,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
-      - name: Install Python
+      - name: Install Python 
         uses: actions/setup-python@v4
         
       - name: Install poetry
@@ -24,5 +24,8 @@ jobs:
           path: ./.venv
           key: venv-${{ hashFiles('poetry.lock') }}
 
-      - name: Run Ruff 
-        uses: ./.github/actions/run-ruff
+      - name: Run Ruff  
+        shell: bash
+        run: |
+          poetry run ruff check &&
+          poetry run ruff format
