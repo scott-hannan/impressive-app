@@ -1,46 +1,35 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.12-slim AS development_build
+FROM python:3.12-slim AS base
 
-EXPOSE 8000
-RUN apt-get -y update; apt-get -y install curl
-# Keeps Python from generating .pyc files in the container
-ENV YOUR_ENV="development" \
-    PYTHONDONTWRITEBYTECODE=1 \
+# # Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONFAULTHANDLER=1 \
-    PYTHONUNBUFFERED=1 \
     PYTHONHASHSEED=random \
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
 # Poetry's configuration:
     POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_VIRTUALENVS_CREATE=0 \
+    POETRY_VIRTUALENVS_IN_PROJECT=0 \
     POETRY_CACHE_DIR='/var/cache/pypoetry' \
     POETRY_HOME='/usr/local' \
-    POETRY_VERSION=1.7.1 
-
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
-
-# Install non-python dependent poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
-RUN poetry --version
+    POETRY_VERSION=1.7.1 \
+# # Turns off buffering for easier container logging
+    PYTHONUNBUFFERED=1
 
 
+
+RUN pip install "poetry==${POETRY_VERSION}"
 WORKDIR /app
-COPY poetry.lock pyproject.toml /app/
+COPY pyproject.toml poetry.lock ./
+RUN touch README.md
 
-# Project initialization:
-RUN poetry install $(test "$YOUR_ENV" == production && echo "--only=main") --no-interaction --no-ansi
+RUN poetry install --without dev --no-root && rm -rf ${POETRY_CACHE_DIR}
 
-# Creating folders, and files for a project:
-COPY . /app
+COPY manage.py ./
+COPY application ./application
+COPY home ./home
 
-# Creates a non-root user with an explicit UID and adds permission to access the /app folder
-# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
-
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-# File wsgi.py was not found. Please enter the Python path to wsgi file.
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "/app/application/wsgi.py:app"]
+EXPOSE 8000
+# CMD ["tail", "-f", "/dev/null"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
