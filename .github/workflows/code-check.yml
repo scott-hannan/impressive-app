@@ -16,7 +16,7 @@ jobs:
       - name: Poetry Init CI Tooling
         shell: bash
         run: |
-          poetry install --only CI
+          poetry install --only ci
           
       - uses: actions/cache@v3
         name: Define a cache for the virtual environment based on the dependencies lock file
